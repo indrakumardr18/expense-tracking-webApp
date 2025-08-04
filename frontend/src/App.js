@@ -1,47 +1,60 @@
-// frontend/src/App.js (UPDATED)
+// frontend/src/App.js
 import React, { useState, useEffect } from 'react';
-// Remove BrowserRouter import here:
-import { Routes, Route, Link, useNavigate } from 'react-router-dom'; // No need for BrowserRouter import anymore
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import './App.css';
 
-// Import actual components
 import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
+import ForgotPassword from './components/Auth/ForgotPassword';
+import ResetPassword from './components/Auth/ResetPassword';
+import AddExpense from './components/AddExpense';
+import Transactions from './components/Transactions';
+import Dashboard from './components/Dashboard';
+import EditExpense from './components/EditExpense';
+import Budgets from './components/Budgets';
+import Profile from './components/Profile';
 
-// Placeholder components for now
-const Home = () => <h2>Welcome to Expense Tracker!</h2>;
-const Dashboard = () => <h2>Dashboard View</h2>;
-const Transactions = () => <h2>Transactions View</h2>;
-const Budgets = () => <h2>Budgets View</h2>;
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate(); // This hook is now correctly within Router's context
+  const navigate = useNavigate();
 
-  // Check for user_id in localStorage on app load
   useEffect(() => {
     const userId = localStorage.getItem('user_id');
     if (userId) {
       setIsAuthenticated(true);
+      // If authenticated on load, ensure they are on a protected route, e.g., dashboard
+      if (['/', '/login', '/register', '/forgot-password', '/reset-password'].includes(window.location.pathname.split('/')[0] + (window.location.pathname.split('/').length > 2 ? '/:token' : ''))) {
+          navigate('/dashboard', { replace: true });
+      }
+    } else {
+        // If not authenticated, and they are on a protected route, redirect to login
+        // EXCEPT for forgot-password and reset-password
+        if (!['/login', '/register', '/forgot-password', '/reset-password'].some(path => window.location.pathname.startsWith(path))) {
+            navigate('/login', { replace: true });
+        }
     }
-  }, []);
+  }, [navigate]);
+
 
   const handleLoginSuccess = (userId) => {
-    localStorage.setItem('user_id', userId); // Store user ID
+    localStorage.setItem('user_id', userId);
     setIsAuthenticated(true);
-    navigate('/dashboard'); // Redirect to dashboard after login
+    navigate('/dashboard');
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user_id'); // Clear stored user ID
+    localStorage.removeItem('user_id');
     setIsAuthenticated(false);
-    navigate('/login'); // Redirect to login page
+    navigate('/login');
   };
 
   return (
-    // REMOVE THE <Router> WRAPPER HERE!
     <div className="app-container">
-      {/* Sidebar - Conditional rendering based on authentication */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+
       {isAuthenticated && (
         <aside className="sidebar">
           <div className="sidebar-header">Expense Tracker</div>
@@ -50,40 +63,59 @@ function App() {
               <li><Link to="/dashboard">Dashboard</Link></li>
               <li><Link to="/transactions">Transactions</Link></li>
               <li><Link to="/budgets">Budgets</Link></li>
-              {/* More links */}
+              <li><Link to="/add-expense">Add Expense</Link></li>
+              <li><Link to="/profile">Profile Settings</Link></li>
               <li><button onClick={handleLogout} className="logout-btn">Logout</button></li>
             </ul>
           </nav>
         </aside>
       )}
 
-      {/* --- Main Content Area --- */}
       <main className="main-content">
-        {/* Header - Conditional rendering */}
         {isAuthenticated && (
           <header className="app-header">
             <h1>App Header - Placeholder</h1>
-            {/* Search, Add Expense, Profile, Notifications */}
           </header>
         )}
 
         <div className="content-area">
           <Routes>
-            {/* Login Route (always accessible) */}
-            <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
-            <Route path="/" element={<Home />} /> {/* You can redirect this to login if not auth */}
-
-            {/* Protected Routes - Render only if authenticated */}
             {isAuthenticated ? (
               <>
+                {/* Redirect any attempts to go to auth pages when authenticated */}
+                <Route path="/login" element={<Dashboard />} />
+                <Route path="/register" element={<Dashboard />} />
+                <Route path="/forgot-password" element={<Dashboard />} />
+                <Route path="/reset-password/:token" element={<Dashboard />} />
+
+                <Route path="/" element={<Dashboard />} />
+
+                {/* Protected Routes */}
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/transactions" element={<Transactions />} />
                 <Route path="/budgets" element={<Budgets />} />
-                {/* Add more routes as you create components */}
+                <Route path="/add-expense" element={<AddExpense />} />
+                <Route path="/edit-expense/:id" element={<EditExpense />} />
+                <Route path="/profile" element={<Profile />} />
+
+                <Route path="*" element={<Dashboard />} />
               </>
             ) : (
-              // Redirect to login if trying to access protected routes when not authenticated
-              <Route path="*" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+              // If NOT authenticated, only show login/register/forgot-password/reset-password
+              <>
+                <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+                <Route path="/register" element={<Register />} />
+                {/* --- ADD THESE ROUTES FOR FORGOT/RESET PASSWORD --- */}
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
+                {/* --- END ADDITIONS --- */}
+
+                <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+
+                {/* Catch-all for any other paths when not authenticated (redirect to login) */}
+                {/* Ensure /forgot-password and /reset-password are not caught here if they are valid paths */}
+                <Route path="*" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+              </>
             )}
           </Routes>
         </div>

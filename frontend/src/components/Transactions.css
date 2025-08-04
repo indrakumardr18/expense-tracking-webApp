@@ -1,0 +1,165 @@
+/* frontend/src/components/Transactions.css */
+.transactions-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.transactions-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.expenses-list {
+    display: grid;
+    gap: 15px;
+}
+
+.expense-item {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 15px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.expense-item p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.expense-amount {
+    font-weight: bold;
+    color: #28a745; /* Green for positive feel, or red for negative */
+    flex: 1 1 100px; /* Allows it to take minimum width */
+}
+
+.expense-category {
+    flex: 1 1 150px;
+    text-align: center;
+}
+
+.expense-date {
+    flex: 1 1 120px;
+    text-align: right;
+    font-size: 0.9em;
+    color: #777;
+}
+
+.expense-description {
+    flex-basis: 100%; /* Takes full width */
+    font-size: 0.95em;
+    color: #666;
+    margin-top: 10px;
+    border-top: 1px dashed #eee;
+    padding-top: 5px;
+}
+
+.error-message {
+    color: #e74c3c;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* frontend/src/components/Transactions.css */
+/* ... (existing styles) ... */
+
+.expense-item {
+    /* ... existing styles ... */
+    display: flex; /* Ensure flexbox for layout */
+    justify-content: space-between; /* Space out details and actions */
+    align-items: center;
+}
+
+.expense-details {
+    flex-grow: 1; /* Allow details to take up available space */
+}
+
+.expense-actions {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.btn-edit,
+.btn-delete {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.btn-edit {
+    background-color: #007bff; /* Blue */
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: #dc3545; /* Red */
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+/* frontend/src/components/Transactions.css */
+/* ... (existing styles) ... */
+
+.filter-sort-controls {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    justify-content: center; /* Center controls */
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align label and input to start */
+}
+
+.control-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 0.95em;
+}
+
+.control-group select,
+.control-group input[type="date"] {
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1em;
+    min-width: 120px; /* Give inputs a minimum width */
+    box-sizing: border-box; /* Include padding/border in element's total width/height */
+}
+
+/* Adjust expense-item for better spacing if filters are too close */
+.expense-item {
+    margin-bottom: 10px; /* Add some space between items */
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}

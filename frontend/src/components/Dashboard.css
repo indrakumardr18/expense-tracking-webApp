@@ -1,0 +1,235 @@
+/* frontend/src/components/Dashboard.css */
+.dashboard-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 1200px; /* Increased max-width for charts */
+    margin: 20px auto;
+    text-align: center;
+}
+
+.dashboard-container h2 {
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.summary-cards {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    text-align: center;
+    flex: 1;
+    min-width: 200px; /* Adjusted min-width for more cards */
+    max-width: 280px; /* Max width to keep them neat */
+}
+
+.card h3 {
+    color: #555;
+    font-size: 1.1em; /* Smaller font for card titles */
+    margin-bottom: 15px;
+}
+
+.card .amount {
+    font-size: 2em; /* Slightly smaller for multiple cards */
+    font-weight: bold;
+    color: #007bff;
+}
+
+.card .amount.over-budget { /* Style for negative remaining budget */
+    color: #dc3545; /* Red */
+}
+
+.chart-section {
+    display: flex;
+    flex-wrap: wrap; /* Allow charts to wrap */
+    justify-content: space-around;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.chart-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    flex: 1; /* Distribute space */
+    min-width: 450px; /* Minimum width for charts */
+    max-width: 550px; /* Max width for charts */
+    display: flex; /* For centering chart content */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack chart and its title if any */
+}
+
+.category-breakdown {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    text-align: left;
+    max-width: 800px; /* Optional: adjust width */
+    margin: 0 auto; /* Center it */
+}
+
+.category-breakdown h3 {
+    text-align: center;
+    color: #555;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.category-breakdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-breakdown li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.category-breakdown li:last-child {
+    border-bottom: none;
+}
+
+.error-message {
+    color: #e74c3c;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .chart-section {
+        flex-direction: column; /* Stack charts vertically on smaller screens */
+        align-items: center;
+    }
+    .chart-card {
+        min-width: unset; /* Remove min-width to allow shrinking */
+        width: 100%; /* Take full width */
+        max-width: 500px; /* Keep a reasonable max-width */
+    }
+    .summary-cards .card {
+         min-width: 45%; /* Allow cards to be smaller */
+    }
+}
+
+@media (max-width: 550px) {
+    .summary-cards .card {
+        min-width: 100%; /* Stack cards vertically on very small screens */
+    }
+}
+
+/* frontend/src/components/Dashboard.css */
+/* ... (existing styles) ... */
+
+.recent-transactions-section {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    text-align: left;
+    max-width: 800px; /* Adjust width as needed */
+    margin: 40px auto 20px auto; /* Add margin top and center */
+}
+
+.recent-transactions-section h3 {
+    text-align: center;
+    color: #555;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.recent-transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.recent-transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border: 1px solid #f0f0f0;
+    border-radius: 5px;
+    background-color: #fafafa;
+    font-size: 0.95em;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.recent-transaction-item span {
+    margin-right: 15px; /* Space between items */
+}
+
+.recent-transaction-item span:last-child {
+    margin-right: 0;
+}
+
+.recent-transaction-date {
+    font-weight: bold;
+    color: #6c757d;
+    flex-basis: 20%; /* Give date some dedicated space */
+    min-width: 80px;
+}
+
+.recent-transaction-category {
+    font-weight: bold;
+    color: #007bff;
+    flex-basis: 25%;
+    min-width: 100px;
+}
+
+.recent-transaction-amount {
+    font-weight: bold;
+    color: #28a745;
+    font-size: 1.1em;
+    flex-basis: 15%;
+    min-width: 80px;
+    text-align: right;
+}
+
+.recent-transaction-description {
+    color: #495057;
+    font-style: italic;
+    flex-basis: calc(40% - 15px); /* Remaining space for description */
+    min-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Responsive adjustments for recent transactions */
+@media (max-width: 600px) {
+    .recent-transaction-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .recent-transaction-item span {
+        margin-right: 0;
+        width: 100%; /* Take full width */
+        text-align: left;
+    }
+    .recent-transaction-amount {
+        text-align: left;
+    }
+}

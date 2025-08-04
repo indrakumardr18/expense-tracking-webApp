@@ -1,10 +1,10 @@
-// frontend/src/components/Auth/Login.js
+// frontend/src/components/Auth/Register.js
 import React, { useState } from 'react';
-import './Login.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import './AuthForm.css';
 import { toast } from 'react-toastify';
 
-function Login() {
+const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -12,8 +12,7 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        setError(''); // Clear previous errors displayed below the form
+        setError('');
 
         if (!username || !password) {
             setError("Please enter both username and password.");
@@ -22,7 +21,7 @@ function Login() {
         }
 
         try {
-            const response = await fetch('http://localhost:5001/login', {
+            const response = await fetch('http://localhost:5001/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,31 +34,27 @@ function Login() {
                 // --- END IMPORTANT CHANGE ---
             });
 
-            const data = await response.json();
-
             if (response.ok) {
-                console.log('Login successful:', data.message);
-                localStorage.setItem('user_id', data.user_id);
-                toast.success('Login successful!');
-                navigate('/dashboard');
+                const data = await response.json();
+                toast.success(data.message);
+                navigate('/login');
             } else {
-                setError(data.error || 'Login failed. Please try again.');
-                toast.error(data.error || 'Login failed. Please try again.');
-                console.error('Login error:', data.error);
+                const errorData = await response.json();
+                setError(errorData.error || 'Registration failed. Please try again.');
+                toast.error(errorData.error || 'Registration failed. Please try again.');
             }
-        } catch (networkError) {
-            setError('Network error. Could not connect to the server.');
-            toast.error('Network error. Could not connect to the server.');
-            console.error('Network error during login:', networkError);
+        } catch (err) {
+            setError('Network error. Please ensure the backend is running and accessible.');
+            toast.error('Network error. Could not connect to backend.');
+            console.error('Registration fetch error:', err);
         }
     };
 
     return (
         <div className="auth-container">
-            <div className="login-card">
-                <h2 className="login-title">Welcome Back!</h2>
-                <p className="login-subtitle">Please log in to your account.</p>
-                <form onSubmit={handleSubmit} className="login-form">
+            <div className="auth-card">
+                <h2>Register Account</h2>
+                <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
                         <input
@@ -67,7 +62,6 @@ function Login() {
                             id="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Enter your username"
                             required
                         />
                     </div>
@@ -78,21 +72,16 @@ function Login() {
                             id="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password"
                             required
                         />
-                        {/* As discussed previously, consider changing <a> to <button> for accessibility if it doesn't navigate */}
-                        <Link to="/forgot-password" className="forgot-password">Forgot Password?</Link>
                     </div>
                     {error && <p className="error-message">{error}</p>}
-                    <button type="submit" className="login-button">Login</button>
+                    <button type="submit" className="btn-primary">Register</button>
                 </form>
-                <p className="signup-link">
-                    Don't have an account? <Link to="/register">Sign up</Link>
-                </p>
+                <p>Already have an account? <span onClick={() => navigate('/login')} className="link-text">Login here</span></p>
             </div>
         </div>
     );
-}
+};
 
-export default Login;
+export default Register;
